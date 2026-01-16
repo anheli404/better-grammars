@@ -11,6 +11,7 @@ import compression.samplegrammars.model.RuleProbModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class NayukiEncodeRunner {
@@ -31,7 +32,10 @@ public final class NayukiEncodeRunner {
                 );
 
         for (Rule rule : encoder.leftmostDerivationFor(rna)) {
-            List<Interval> options = model.getIntervalList(rule.left);
+            // Lấy list interval và SẮP XẾP theo lowerBound
+            List<Interval> options = new ArrayList<>(model.getIntervalList(rule.left));
+            options.sort((a, b) -> a.getLowerBound().compareTo(b.getLowerBound()));
+
             Interval chosen = model.getIntervalFor(rule);
 
             engine.encodeNext(options, chosen);
