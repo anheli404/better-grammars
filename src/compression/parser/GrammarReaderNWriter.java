@@ -125,7 +125,7 @@ public class GrammarReaderNWriter {
 	public NonTerminal getLHS(String line, List<NonTerminal> nonTerminals) {
 		String buildTheString = "";
 		for (char i : line.toCharArray()) {
-			if (i != '-' && i != ' ' && i != '→') {
+			if (i != '-' && i != ' ' && i != '>') {
 				buildTheString += i; // only short names, hence fine to append to string
 			} else
 				for (NonTerminal nt : nonTerminals) {
