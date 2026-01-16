@@ -4,14 +4,13 @@ import compression.arithmaticCoding.bigDecimalAc.Interval;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
 public final class NayukiArithmeticEncoderAdapter {
 
     private static final int STATE_BITS = 32;
     private static final int TOTAL_SCALE = 1 << 18;
-    private static final MathContext MC = MathContext.DECIMAL128;
 
     private final ArithmeticEncoderNayuki encoder;
 
@@ -20,48 +19,17 @@ public final class NayukiArithmeticEncoderAdapter {
     }
 
     public void encodeNext(List<Interval> options, Interval chosen) throws IOException {
-        if (options.isEmpty()) {
+        if (options == null || options.isEmpty()) {
             throw new IllegalArgumentException("Options list must not be empty");
         }
 
-        int[] freqs = new int[options.size()];
-
-        // 1) Compute raw weights from BigDecimal intervals
-        BigDecimal totalLength = BigDecimal.ZERO;
-        for (Interval it : options) {
-            totalLength = totalLength.add(it.getLength(), MC);
-        }
-
-        if (totalLength.signum() <= 0) {
-            throw new IllegalStateException("Total interval length must be positive");
-        }
-
-        int sum = 0;
-        for (int i = 0; i < options.size(); i++) {
-            BigDecimal len = options.get(i).getLength();
-
-            int w = len
-                    .multiply(BigDecimal.valueOf(TOTAL_SCALE), MC)
-                    .divide(totalLength, MC)
-                    .intValue();
-
-            if (w <= 0) w = 1;   // ensure non-zero frequency
-            freqs[i] = w;
-            sum += w;
-        }
-
-        // 2) Normalize to fixed TOTAL_SCALE
-        int diff = TOTAL_SCALE - sum;
-        freqs[0] += diff; // deterministic correction
-
-        // 3) Build frequency table
-        FrequencyTable table = new SimpleFrequencyTable(freqs);
-
-        // 4) Find symbol index deterministically
         int symbol = indexOf(options, chosen);
         if (symbol < 0) {
             throw new IllegalArgumentException("Chosen interval not found in options");
         }
+
+        int[] freqs = buildFrequencies(options);
+        FrequencyTable table = new SimpleFrequencyTable(freqs);
 
         encoder.write(table, symbol);
     }
@@ -70,14 +38,54 @@ public final class NayukiArithmeticEncoderAdapter {
         encoder.finish();
     }
 
-    private static FrequencyTable buildFrequencyTable(List<Interval> options) {
-        int[] freqs = new int[options.size()];
-        for (int i = 0; i < options.size(); i++) {
-            BigDecimal len = options.get(i).getLength();
-            int w = len.multiply(BigDecimal.valueOf(TOTAL_SCALE), MC).intValue();
-            freqs[i] = Math.max(1, w);
+    /**
+     * Chuyển danh sách interval thành bảng tần suất int >= 1.
+     * Áp dụng *giống hệt* bên decoder.
+     */
+    static int[] buildFrequencies(List<Interval> options) {
+        int n = options.size();
+        int[] freqs = new int[n];
+
+        // Tổng độ dài, để chuẩn hóa thành xác suất
+        BigDecimal totalLength = BigDecimal.ZERO;
+        for (Interval it : options) {
+            totalLength = totalLength.add(it.getLength());
         }
-        return new SimpleFrequencyTable(freqs);
+
+        if (totalLength.signum() <= 0) {
+            throw new IllegalStateException("Total interval length must be positive");
+        }
+
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            BigDecimal len = options.get(i).getLength();
+
+            int w;
+            if (len.signum() <= 0) {
+                // nếu vì lý do nào đó length <= 0 → vẫn cho tần suất tối thiểu
+                w = 1;
+            } else {
+                // w ≈ len / totalLength * TOTAL_SCALE, làm tròn HALF_UP
+                BigDecimal scaled =
+                        len.multiply(BigDecimal.valueOf(TOTAL_SCALE))
+                                .divide(totalLength, 0, RoundingMode.HALF_UP);
+                w = scaled.intValue();
+                if (w <= 0) {
+                    w = 1;
+                }
+            }
+            freqs[i] = w;
+            sum += w;
+        }
+
+        // Nếu (cực kì hiếm) tổng <= 0 thì fallback uniform
+        if (sum <= 0) {
+            for (int i = 0; i < n; i++) {
+                freqs[i] = 1;
+            }
+        }
+
+        return freqs;
     }
 
     private static int indexOf(List<Interval> options, Interval chosen) {
