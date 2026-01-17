@@ -57,8 +57,8 @@ public final class RunSmallDatasetBenchmarkLiuGrammar {
         List<String> lines = new ArrayList<>();
         lines.add(
                 "File,Length," +
-                        "BD_Enc_ms,BD_Dec_ms,BD_Size_bits,BD_Enc_Mem_bytes,BD_Dec_Mem_bytes," +
-                        "Nayuki_Enc_ms,Nayuki_Dec_ms,Nayuki_Size_bytes,Nayuki_Enc_Mem_bytes,Nayuki_Dec_Mem_bytes"
+                        "BD_Enc_ms,BD_Dec_ms,BD_Size_bits,BD_Enc_Mem_bytes,BD_Observed_Dec_Heap_Growth," +
+                        "Nayuki_Enc_ms,Nayuki_Dec_ms,Nayuki_Size_bytes,Nayuki_Enc_Mem_bytes,Nayuki_Observed_Dec_Heap_Growth"
         );
 
         // ===== Walk through dataset =====

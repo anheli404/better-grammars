@@ -38,7 +38,7 @@ public final class RunSingleFileBenchmarkLiuGrammar {
     public static void main(String[] args) throws Exception {
 
         // ===== CONFIG =====
-        Path inputFile = Path.of("datasets/small-dataset/165_120_c.txt");
+        Path inputFile = Path.of("datasets/small-dataset/10023_120_c.txt");
         int warmup = 5;
         int runs = 20;
 
@@ -155,8 +155,8 @@ public final class RunSingleFileBenchmarkLiuGrammar {
         /* ======================= WRITE CSV ======================= */
         String csv =
                 "File,Length," +
-                        "BD_Enc_ms,BD_Dec_ms,BD_Size_bits,BD_Enc_Mem_bytes,BD_Dec_Mem_bytes," +
-                        "Nayuki_Enc_ms,Nayuki_Dec_ms,Nayuki_Size_bytes,Nayuki_Enc_Mem_bytes,Nayuki_Dec_Mem_bytes\n" +
+                        "BD_Enc_ms,BD_Dec_ms,BD_Size_bits,BD_Enc_Mem_bytes,BD_Observed_Dec_Heap_Growth," +
+                        "Nayuki_Enc_ms,Nayuki_Dec_ms,Nayuki_Size_bytes,Nayuki_Enc_Mem_bytes,Nayuki_Observed_Dec_Heap_Growth\n" +
                         inputFile.getFileName() + "," +
                         primary.length() + "," +
                         bdEncMs + "," +
