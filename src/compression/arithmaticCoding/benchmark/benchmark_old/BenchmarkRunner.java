@@ -1,7 +1,6 @@
-package compression.benchmark;
+package compression.arithmaticCoding.benchmark.benchmark_old;
 
 import compression.GenericRNAEncoder;
-import compression.GenericRNADecoder;
 import compression.grammar.RNAWithStructure;
 import compression.grammar.NonTerminal;
 import compression.samplegrammars.model.RuleProbModel;

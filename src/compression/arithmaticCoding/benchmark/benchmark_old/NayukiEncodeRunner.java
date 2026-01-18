@@ -1,4 +1,4 @@
-package compression.benchmark;
+package compression.arithmaticCoding.benchmark.benchmark_old;
 
 import compression.GenericRNAEncoder;
 import compression.grammar.RNAWithStructure;

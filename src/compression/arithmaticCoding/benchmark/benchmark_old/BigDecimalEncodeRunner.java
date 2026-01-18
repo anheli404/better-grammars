@@ -1,11 +1,9 @@
-package compression.benchmark;
+package compression.arithmaticCoding.benchmark.benchmark_old;
 
 import compression.GenericRNAEncoder;
 import compression.grammar.*;
 import compression.arithmaticCoding.bigDecimalAc.*;
 import compression.samplegrammars.model.RuleProbModel;
-
-import java.util.List;
 
 public final class BigDecimalEncodeRunner {
 

@@ -1,23 +1,28 @@
-package compression.benchmark;
+package compression.arithmaticCoding.benchmark.benchmark_old;
 
 import compression.GenericRNAEncoder;
 import compression.grammar.NonTerminal;
 import compression.grammar.RNAWithStructure;
 import compression.grammar.RNAGrammar;
+import compression.grammar.Rule;
 import compression.samplegrammars.LiuGrammar;
 import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.StaticRuleProbModel;
 import compression.arithmaticCoding.bigDecimalAc.ExactArithmeticEncoder;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Entry point for benchmarking ONE RNA file.
- * Measures runtime, memory usage, and compressed size
- * for BigDecimal vs Nayuki arithmetic coding.
+ * LEGACY benchmark:
+ * BigDecimal AC and Nayuki AC both use BigDecimal intervals.
+ * This class is kept for reference only.
  */
-public final class RunSingleFileBenchmarkLiuSkewed {
+public final class RunSingleFileBenchmarkLiuGrammar {
 
     /* ===================== MEMORY HELPERS ===================== */
 
@@ -57,11 +62,12 @@ public final class RunSingleFileBenchmarkLiuSkewed {
         RNAGrammar grammar = liu.getGrammar();
         NonTerminal startSymbol = grammar.getStartSymbol();
 
-        // ===== PROBABILITY MODEL =====
-        RuleProbModel model = new SkewedRuleProbModel(grammar, 0.5);
+        // ===== STATIC RULE PROB MODEL (UNIFORM) =====
+        Map<Rule, Double> probs = createUniformProbs(grammar);
+        RuleProbModel model = new StaticRuleProbModel(grammar, probs);
 
         /* =========================================================
-           BIG DECIMAL BENCHMARK
+           BIG DECIMAL BENCHMARK (LEGACY)
          ========================================================= */
         GenericRNAEncoder bigEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(), grammar, startSymbol);
@@ -107,7 +113,7 @@ public final class RunSingleFileBenchmarkLiuSkewed {
         double bdSizeAvg = (double) bdSizeBits / runs;
 
         /* =========================================================
-           NAYUKI BENCHMARK
+           NAYUKI BENCHMARK (LEGACY – INTERVAL-BASED)
          ========================================================= */
         GenericRNAEncoder nayukiEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(), grammar, startSymbol);
@@ -170,9 +176,23 @@ public final class RunSingleFileBenchmarkLiuSkewed {
                         nyEncMemAvg + "," +
                         nyDecMemAvg;
 
-        Files.writeString(Path.of("SingleFileBenchmarkLiu_Skew50.csv"), csv);
+        Files.writeString(Path.of("SingleFileBenchmarkLiu.csv"), csv);
 
-        System.out.println("Benchmark completed:");
+        System.out.println("LEGACY benchmark completed:");
         System.out.println(csv);
+    }
+
+    /* ===================== PROB HELPERS ===================== */
+
+    private static Map<Rule, Double> createUniformProbs(RNAGrammar grammar) {
+        Map<Rule, Double> probs = new HashMap<>();
+        for (NonTerminal lhs : grammar.getNonTerminals()) {
+            List<Rule> rules = new ArrayList<>(grammar.getRules(lhs));
+            double p = 1.0 / rules.size();
+            for (Rule r : rules) {
+                probs.put(r, p);
+            }
+        }
+        return probs;
     }
 }
