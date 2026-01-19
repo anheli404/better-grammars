@@ -1,10 +1,10 @@
 package compression.arithmaticCoding.benchmark.benchmark_new;
 
+import compression.GenericRNAEncoder;
 import compression.arithmaticCoding.core.bigdecimal.BigDecimalArithmeticCoder;
 import compression.arithmaticCoding.core.nayuki.AdaptiveNayukiRuleCoder;
 import compression.arithmaticCoding.nayukiAc.ArithmeticEncoderNayuki;
 import compression.arithmaticCoding.nayukiAc.BitOutputStream;
-
 import compression.grammar.*;
 import compression.samplegrammars.SchulzGrammar;
 import compression.samplegrammars.LeftmostDerivation;
@@ -15,13 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.*;
 import java.util.*;
 
-/**
- * Dataset benchmark:
- * Schulz grammar
- * Uniform static probabilities
- * BigDecimal (core) vs Nayuki (adaptive)
- * One CSV row per RNA file
- */
 public final class RunSmallDatasetBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_AdaptiveNayuki {
 
     private static final int RUNS = 10;
@@ -42,11 +35,9 @@ public final class RunSmallDatasetBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_A
         Path outputCsv =
                 Path.of("SmallDataset_Schulz_Uniform_AdaptiveNayuki.csv");
 
-        /* ===== Grammar ===== */
         SchulzGrammar schulz = new SchulzGrammar(false);
         RNAGrammar grammar = schulz.getGrammar();
 
-        /* ===== Static uniform model ===== */
         Map<Rule, Double> probs = createUniformProbs(grammar);
         RuleProbModel model = new StaticRuleProbModel(grammar, probs);
 
@@ -76,7 +67,6 @@ public final class RunSmallDatasetBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_A
                         List<Rule> derivation =
                                 LeftmostDerivation.rules(grammar, rna);
 
-                        /* ================= BigDecimal ================= */
                         long bdEncNs = 0;
                         long bdEncMem = 0;
 
@@ -100,7 +90,6 @@ public final class RunSmallDatasetBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_A
                             bdEncMem += (memAfter - memBefore);
                         }
 
-                        /* ================= Nayuki adaptive ================= */
                         long nyEncNs = 0;
                         long nyEncMem = 0;
                         int nySizeBytes = 0;

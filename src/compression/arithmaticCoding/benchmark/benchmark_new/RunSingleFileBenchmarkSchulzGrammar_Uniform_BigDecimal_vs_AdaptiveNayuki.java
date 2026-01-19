@@ -17,14 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Single-file benchmark:
- * Schulz grammar
- * BigDecimal AC vs Adaptive Nayuki AC
- */
 public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_AdaptiveNayuki {
-
-    /* ===================== MEMORY HELPERS ===================== */
 
     private static long usedMemoryBytes() {
         Runtime rt = Runtime.getRuntime();
@@ -38,16 +31,12 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
         } catch (InterruptedException ignored) {}
     }
 
-    /* =========================== MAIN ========================== */
-
     public static void main(String[] args) throws Exception {
 
-        // ===== CONFIG =====
         Path inputFile = Path.of("datasets/small-dataset/165_120_c.txt");
         int warmup = 5;
         int runs = 20;
 
-        // ===== READ FILE =====
         List<String> lines = Files.readAllLines(inputFile);
         if (lines.size() < 2)
             throw new IllegalArgumentException("Invalid RNA file");
@@ -55,21 +44,15 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
         RNAWithStructure rna =
                 new RNAWithStructure(lines.get(0).trim(), lines.get(1).trim());
 
-        // ===== GRAMMAR =====
         SchulzGrammar schulz = new SchulzGrammar(false);
         RNAGrammar grammar = schulz.getGrammar();
         NonTerminal startSymbol = grammar.getStartSymbol();
 
-        // ===== UNIFORM STATIC MODEL =====
         RuleProbModel model =
                 new StaticRuleProbModel(grammar, createUniformProbs(grammar));
 
         SRFParser<PairOfChar> parser =
                 new SRFParser<>(grammar, RuleProbModel.DONT_CARE);
-
-        /* =========================================================
-           BIG DECIMAL BENCHMARK
-         ========================================================= */
 
         GenericRNAEncoder bdEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(),
@@ -97,10 +80,6 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
             bdBits += enc.length();
         }
 
-        /* =========================================================
-           ADAPTIVE NAYUKI BENCHMARK
-         ========================================================= */
-
         for (int i = 0; i < warmup; i++)
             encodeAdaptive(parser, grammar, rna);
 
@@ -123,8 +102,6 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
             nyBytes += enc.length;
         }
 
-        /* ======================= CSV ======================= */
-
         String csv =
                 "File,Length," +
                         "BD_Enc_ms,BD_Size_bits,BD_Enc_Mem_bytes," +
@@ -139,16 +116,11 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
                         ((double) nyBytes / runs) + "," +
                         ((double) nyEncMem / runs);
 
-        Files.writeString(
-                Path.of("SingleFileBenchmarkSchulz_BD_vs_AdaptiveNayuki.csv"),
-                csv
-        );
+        Files.writeString(Path.of("SingleFileBenchmarkSchulz_BD_vs_AdaptiveNayuki.csv"), csv);
 
         System.out.println("Benchmark completed:");
         System.out.println(csv);
     }
-
-    /* ===================== ADAPTIVE NAYUKI ===================== */
 
     private static byte[] encodeAdaptive(
             SRFParser<PairOfChar> parser,
@@ -173,8 +145,6 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
         return baos.toByteArray();
     }
 
-    /* ===================== PROBS ===================== */
-
     private static Map<Rule, Double> createUniformProbs(RNAGrammar grammar) {
         Map<Rule, Double> probs = new HashMap<>();
         for (NonTerminal lhs : grammar.getNonTerminals()) {
@@ -185,4 +155,3 @@ public final class RunSingleFileBenchmarkSchulzGrammar_Uniform_BigDecimal_vs_Ada
         return probs;
     }
 }
-

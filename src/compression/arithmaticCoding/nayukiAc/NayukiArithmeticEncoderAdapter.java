@@ -46,7 +46,6 @@ public final class NayukiArithmeticEncoderAdapter {
         int n = options.size();
         int[] freqs = new int[n];
 
-        // Tổng độ dài, để chuẩn hóa thành xác suất
         BigDecimal totalLength = BigDecimal.ZERO;
         for (Interval it : options) {
             totalLength = totalLength.add(it.getLength());
@@ -62,10 +61,8 @@ public final class NayukiArithmeticEncoderAdapter {
 
             int w;
             if (len.signum() <= 0) {
-                // nếu vì lý do nào đó length <= 0 → vẫn cho tần suất tối thiểu
                 w = 1;
             } else {
-                // w ≈ len / totalLength * TOTAL_SCALE, làm tròn HALF_UP
                 BigDecimal scaled =
                         len.multiply(BigDecimal.valueOf(TOTAL_SCALE))
                                 .divide(totalLength, 0, RoundingMode.HALF_UP);
@@ -78,7 +75,6 @@ public final class NayukiArithmeticEncoderAdapter {
             sum += w;
         }
 
-        // Nếu (cực kì hiếm) tổng <= 0 thì fallback uniform
         if (sum <= 0) {
             for (int i = 0; i < n; i++) {
                 freqs[i] = 1;

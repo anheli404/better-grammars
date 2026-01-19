@@ -16,17 +16,10 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.*;
 import java.util.*;
 
-/**
- * Dataset benchmark:
- * BigDecimal AC  vs  Adaptive Nayuki AC
- * One CSV row per RNA file (same format as legacy benchmark).
- */
 public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_AdaptiveNayuki {
 
     private static final int WARMUP = 3;
     private static final int RUNS = 10;
-
-    /* ===================== MEMORY HELPERS ===================== */
 
     private static long usedMemoryBytes() {
         Runtime rt = Runtime.getRuntime();
@@ -40,14 +33,11 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
         } catch (InterruptedException ignored) {}
     }
 
-    /* =========================== MAIN ========================== */
-
     public static void main(String[] args) throws Exception {
 
         Path datasetRoot = Path.of("datasets", "small-dataset");
         Path outputCsv = Path.of("SmallDatasetBenchmarkLiu_BD_vs_AdaptiveNayuki.csv");
 
-        // ===== Grammar & model =====
         LiuGrammar liu = new LiuGrammar(false);
         RNAGrammar grammar = liu.getGrammar();
         NonTerminal startSymbol = grammar.getStartSymbol();
@@ -77,8 +67,6 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
                         RNAWithStructure rna =
                                 new RNAWithStructure(lines.get(0).trim(), lines.get(1).trim());
 
-                        /* ================= BigDecimal ================= */
-
                         GenericRNAEncoder bdEnc =
                                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(),
                                         grammar, startSymbol);
@@ -104,8 +92,6 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
                             bdEncMem += (m1 - m0);
                             bdBits += enc.length();
                         }
-
-                        /* ================= Adaptive Nayuki ================= */
 
                         for (int i = 0; i < WARMUP; i++)
                             encodeAdaptive(parser, grammar, rna);
@@ -133,7 +119,7 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
                                 datasetRoot.relativize(path).toString(),
                                 String.valueOf(rna.getNumberOfBases()),
                                 String.valueOf(bdEncNs / 1e6 / RUNS),
-                                "0", // decode omitted (same as your new runs)
+                                "0",
                                 String.valueOf((double) bdBits / RUNS),
                                 String.valueOf((double) bdEncMem / RUNS),
                                 "0",
@@ -150,8 +136,6 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
         Files.write(outputCsv, csv);
         System.out.println("DONE → " + outputCsv.toAbsolutePath());
     }
-
-    /* ===================== ADAPTIVE NAYUKI ===================== */
 
     private static byte[] encodeAdaptive(
             SRFParser<PairOfChar> parser,
@@ -175,8 +159,6 @@ public final class RunSmallDatasetBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adap
         bitOut.close();
         return baos.toByteArray();
     }
-
-    /* ===================== PROBS ===================== */
 
     private static Map<Rule, Double> createUniformProbs(RNAGrammar grammar) {
         Map<Rule, Double> probs = new HashMap<>();

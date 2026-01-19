@@ -38,7 +38,7 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_StaticNayuki {
         Map<Rule, Double> probs = createUniformProbs(grammar);
         RuleProbModel model = new StaticRuleProbModel(grammar, probs);
 
-        /* ================= BIGDECIMAL ================= */
+        // BIGDECIMAL
         GenericRNAEncoder bdEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(),
                         grammar, grammar.getStartSymbol());
@@ -52,7 +52,7 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_StaticNayuki {
             bdNs += (t1 - t0);
         }
 
-        /* ================= NAYUKI (FIXED) ================= */
+         //NAYUKI (FIXED)
         RuleSymbolModel symbolModel =
                 new RuleSymbolModel(grammar, model);
 

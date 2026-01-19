@@ -17,14 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Single-file benchmark:
- * BigDecimal AC  vs  Adaptive Nayuki AC
- * Output format mirrors legacy benchmark.
- */
 public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_AdaptiveNayuki {
-
-    /* ===================== MEMORY HELPERS ===================== */
 
     private static long usedMemoryBytes() {
         Runtime rt = Runtime.getRuntime();
@@ -38,16 +31,12 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
         } catch (InterruptedException ignored) {}
     }
 
-    /* =========================== MAIN ========================== */
-
     public static void main(String[] args) throws Exception {
 
-        // ===== CONFIG =====
         Path inputFile = Path.of("datasets/small-dataset/165_120_c.txt");
         int warmup = 5;
         int runs = 20;
 
-        // ===== READ FILE =====
         List<String> lines = Files.readAllLines(inputFile);
         if (lines.size() < 2) {
             throw new IllegalArgumentException("Input file must contain primary + secondary structure");
@@ -56,21 +45,15 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
         RNAWithStructure rna =
                 new RNAWithStructure(lines.get(0).trim(), lines.get(1).trim());
 
-        // ===== GRAMMAR =====
         LiuGrammar liu = new LiuGrammar(false);
         RNAGrammar grammar = liu.getGrammar();
         NonTerminal startSymbol = grammar.getStartSymbol();
 
-        // ===== STATIC UNIFORM MODEL (for BigDecimal + parser) =====
         RuleProbModel model =
                 new StaticRuleProbModel(grammar, createUniformProbs(grammar));
 
         SRFParser<PairOfChar> parser =
                 new SRFParser<>(grammar, RuleProbModel.DONT_CARE);
-
-        /* =========================================================
-           BIG DECIMAL BENCHMARK
-         ========================================================= */
 
         GenericRNAEncoder bdEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(),
@@ -99,10 +82,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
             bdBits += enc.length();
         }
 
-        /* =========================================================
-           ADAPTIVE NAYUKI BENCHMARK
-         ========================================================= */
-
         for (int i = 0; i < warmup; i++)
             encodeAdaptive(parser, grammar, rna);
 
@@ -126,8 +105,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
             nyBytes += enc.length;
         }
 
-        /* ======================= CSV ======================= */
-
         String csv =
                 "File,Length," +
                         "BD_Enc_ms,BD_Size_bits,BD_Enc_Mem_bytes," +
@@ -147,8 +124,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
         System.out.println("Benchmark completed:");
         System.out.println(csv);
     }
-
-    /* ===================== ADAPTIVE NAYUKI ===================== */
 
     private static byte[] encodeAdaptive(
             SRFParser<PairOfChar> parser,
@@ -172,8 +147,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Uniform_BigDecimal_vs_Adapti
         bitOut.close();
         return baos.toByteArray();
     }
-
-    /* ===================== PROBS ===================== */
 
     private static Map<Rule, Double> createUniformProbs(RNAGrammar grammar) {
         Map<Rule, Double> probs = new HashMap<>();

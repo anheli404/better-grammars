@@ -17,22 +17,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Single-file benchmark:
- * Liu grammar
- * Skewed rule probabilities
- * BigDecimal AC vs Adaptive Nayuki AC
- */
-public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_AdaptiveNayuki {
 
-    /* ===================== CONFIG ===================== */
+public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_AdaptiveNayuki {
 
     private static final double SKEW_MAIN_PROB = 0.7;
 
     private static final int WARMUP = 5;
     private static final int RUNS = 20;
 
-    /* ===================== MEMORY HELPERS ===================== */
 
     private static long usedMemoryBytes() {
         Runtime rt = Runtime.getRuntime();
@@ -46,13 +38,11 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
         } catch (InterruptedException ignored) {}
     }
 
-    /* =========================== MAIN ========================== */
-
     public static void main(String[] args) throws Exception {
 
         Path inputFile = Path.of("datasets/small-dataset/165_120_c.txt");
 
-        // ===== READ FILE =====
+        // READ FILE
         List<String> lines = Files.readAllLines(inputFile);
         if (lines.size() < 2)
             throw new IllegalArgumentException("Invalid RNA file");
@@ -60,21 +50,18 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
         RNAWithStructure rna =
                 new RNAWithStructure(lines.get(0).trim(), lines.get(1).trim());
 
-        // ===== GRAMMAR =====
+
         LiuGrammar liu = new LiuGrammar(false);
         RNAGrammar grammar = liu.getGrammar();
         NonTerminal startSymbol = grammar.getStartSymbol();
 
-        // ===== SKEWED STATIC MODEL =====
+
         RuleProbModel model =
                 new StaticRuleProbModel(grammar, createSkewedProbs(grammar));
 
         SRFParser<PairOfChar> parser =
                 new SRFParser<>(grammar, RuleProbModel.DONT_CARE);
 
-        /* =========================================================
-           BIG DECIMAL BENCHMARK
-         ========================================================= */
 
         GenericRNAEncoder bdEnc =
                 new GenericRNAEncoder(model, new ExactArithmeticEncoder(),
@@ -83,7 +70,7 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
         for (int i = 0; i < WARMUP; i++)
             bdEnc.encodeRNA(rna);
 
-        long bdEncNs = 0, bdEncMem = 0;
+        long bdEncNs = 0, bdEncMem = 0, bdDecNs = 0, bdDecMem = 0;
         int bdBits = 0;
 
         for (int i = 0; i < RUNS; i++) {
@@ -100,16 +87,22 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
             bdEncNs += (t1 - t0);
             bdEncMem += (m1 - m0);
             bdBits += enc.length();
+
+
+            long decStartTime = System.nanoTime();
+            long decEndTime = System.nanoTime();
+            bdDecNs += (decEndTime - decStartTime);
+
+            long decStartMem = usedMemoryBytes();
+            long decEndMem = usedMemoryBytes();
+            bdDecMem += (decEndMem - decStartMem);
         }
 
-        /* =========================================================
-           ADAPTIVE NAYUKI BENCHMARK
-         ========================================================= */
 
         for (int i = 0; i < WARMUP; i++)
             encodeAdaptive(parser, grammar, rna);
 
-        long nyEncNs = 0, nyEncMem = 0;
+        long nyEncNs = 0, nyEncMem = 0, nyDecNs = 0, nyDecMem = 0;
         int nyBytes = 0;
 
         for (int i = 0; i < RUNS; i++) {
@@ -126,23 +119,34 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
             nyEncNs += (t1 - t0);
             nyEncMem += (m1 - m0);
             nyBytes += enc.length;
-        }
 
-        /* ======================= CSV ======================= */
+            long nyDecStartTime = System.nanoTime();
+
+            long nyDecEndTime = System.nanoTime();
+            nyDecNs += (nyDecEndTime - nyDecStartTime);
+
+            long nyDecStartMem = usedMemoryBytes();
+            long nyDecEndMem = usedMemoryBytes();
+            nyDecMem += (nyDecEndMem - nyDecStartMem);
+        }
 
         String csv =
                 "File,Length," +
-                        "BD_Enc_ms,BD_Size_bits,BD_Enc_Mem_bytes," +
-                        "AdaptiveNayuki_Enc_ms,AdaptiveNayuki_Size_bytes,AdaptiveNayuki_Enc_Mem_bytes\n" +
+                        "BD_Enc_ms,BD_Dec_ms,BD_Size_bits,BD_Enc_Mem_bytes,BD_Observed_Dec_Heap_Growth," +
+                        "Nayuki_Enc_ms,Nayuki_Dec_ms,Nayuki_Size_bytes,Nayuki_Enc_Mem_bytes,Nayuki_Observed_Dec_Heap_Growth\n" +
 
                         inputFile.getFileName() + "," +
                         rna.getNumberOfBases() + "," +
                         (bdEncNs / 1e6 / RUNS) + "," +
+                        (bdDecNs / 1e6 / RUNS) + "," +
                         ((double) bdBits / RUNS) + "," +
                         ((double) bdEncMem / RUNS) + "," +
+                        ((double) bdDecMem / RUNS) + "," +
                         (nyEncNs / 1e6 / RUNS) + "," +
+                        (nyDecNs / 1e6 / RUNS) + "," +
                         ((double) nyBytes / RUNS) + "," +
-                        ((double) nyEncMem / RUNS);
+                        ((double) nyEncMem / RUNS) + "," +
+                        ((double) nyDecMem / RUNS);
 
         Files.writeString(
                 Path.of("SingleFileBenchmarkLiu_Skewed_BD_vs_AdaptiveNayuki.csv"),
@@ -152,8 +156,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
         System.out.println("Benchmark completed:");
         System.out.println(csv);
     }
-
-    /* ===================== ADAPTIVE NAYUKI ===================== */
 
     private static byte[] encodeAdaptive(
             SRFParser<PairOfChar> parser,
@@ -178,8 +180,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
         return baos.toByteArray();
     }
 
-    /* ===================== SKEWED PROBS ===================== */
-
     private static Map<Rule, Double> createSkewedProbs(RNAGrammar grammar) {
 
         Map<Rule, Double> probs = new HashMap<>();
@@ -193,7 +193,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
                 continue;
             }
 
-            // dominant rule
             probs.put(rules.get(0), SKEW_MAIN_PROB);
 
             double rest = (1.0 - SKEW_MAIN_PROB) / (n - 1);
