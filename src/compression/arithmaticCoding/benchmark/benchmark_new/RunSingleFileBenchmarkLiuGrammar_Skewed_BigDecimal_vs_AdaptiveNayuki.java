@@ -27,7 +27,6 @@ public final class RunSingleFileBenchmarkLiuGrammar_Skewed_BigDecimal_vs_Adaptiv
 
     /* ===================== CONFIG ===================== */
 
-    // 🔧 CHỈ ĐỔI SỐ Ở ĐÂY
     private static final double SKEW_MAIN_PROB = 0.7;
 
     private static final int WARMUP = 5;
