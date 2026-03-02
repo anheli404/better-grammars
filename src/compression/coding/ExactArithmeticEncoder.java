@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compression.arithmaticCoding.bigDecimalAc;
+package compression.coding;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static compression.arithmaticCoding.bigDecimalAc.BigDecimals.bigDecimalToBinary;
-import static compression.arithmaticCoding.bigDecimalAc.BigDecimals.halfOf;
+import static compression.coding.BigDecimals.bigDecimalToBinary;
+import static compression.coding.BigDecimals.halfOf;
 
 /**
  * Simple hackish implementation of arithmetic encoder that uses BigDecimal intervals

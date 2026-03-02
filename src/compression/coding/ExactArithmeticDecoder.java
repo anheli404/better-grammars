@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compression.arithmaticCoding.bigDecimalAc;
+package compression.coding;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

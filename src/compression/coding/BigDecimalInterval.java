@@ -1,7 +1,8 @@
-package compression.arithmaticCoding.bigDecimalAc;
+package compression.coding;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 /**

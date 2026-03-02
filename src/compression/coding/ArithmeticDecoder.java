@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compression.arithmaticCoding.bigDecimalAc;
-import compression.arithmaticCoding.bigDecimalAc.Interval;
-
+package compression.coding;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
 package compression;
 
-import compression.arithmaticCoding.ArithmeticCodingFactory;
+import compression.coding.ArithmeticCodingFactory;
 
 /**
  * @author Sebastian Wild (wild@uwaterloo.ca)

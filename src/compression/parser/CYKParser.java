@@ -1,7 +1,7 @@
 package compression.parser;
 
-import compression.arithmaticCoding.bigDecimalAc.BigDecimalInterval;
-import compression.arithmaticCoding.bigDecimalAc.Interval;
+import compression.coding.bigDecimalAc.BigDecimalInterval;
+import compression.coding.bigDecimalAc.Interval;
 import compression.grammar.*;
 import compression.samplegrammars.model.RuleProbModel;
 
