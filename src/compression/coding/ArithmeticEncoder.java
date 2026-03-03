@@ -11,7 +11,7 @@ public interface ArithmeticEncoder {
      *
      * @param interval the interval that the next event corresponds to
      */
-    void encodeNext(Interval interval);//use encode its more general
+    void encodeNext(Interval interval);
 
     /**
      * @return String of 0 and 1 representing the binary encoding of all encoded

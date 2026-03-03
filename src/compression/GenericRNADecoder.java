@@ -5,8 +5,8 @@
  */
 package compression;
 
-import compression.coding.bigDecimalAc.ArithmeticDecoder;
-import compression.coding.bigDecimalAc.Interval;
+import compression.coding.ArithmeticDecoder;
+import compression.coding.Interval;
 import compression.grammar.*;
 import compression.samplegrammars.model.RuleProbModel;
 import compression.grammar.Category;

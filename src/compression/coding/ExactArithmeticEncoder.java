@@ -94,5 +94,8 @@ public class ExactArithmeticEncoder implements ArithmeticEncoder {
         return new BigDecimalInterval(newLB, newLen, newLnLen);
     }
 
+    public BigDecimalInterval getInterval() {
+        return this.interval;
+    }
 
 }

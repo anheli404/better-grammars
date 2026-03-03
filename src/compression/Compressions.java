@@ -1,8 +1,8 @@
 package compression;
 
 
-import compression.coding.bigDecimalAc.ArithmeticEncoder;
-import compression.coding.bigDecimalAc.BitSizeOnlyArithmeticEncoder;
+import compression.coding.ArithmeticEncoder;
+import compression.coding.BitSizeOnlyArithmeticEncoder;
 import compression.data.CachedDataset;
 import compression.data.Dataset;
 import compression.data.FolderBasedDataset;

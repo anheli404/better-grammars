@@ -1,8 +1,7 @@
 package compression;
 
-import compression.coding.BigDecimalACAdapter;
-import compression.coding.bigDecimalAc.ArithmeticEncoder;
-import compression.coding.bigDecimalAc.Interval;
+
+import compression.coding.ArithmeticEncoder;
 import compression.parser.SRFParser;
 import compression.parser.StochasticParser;
 import compression.samplegrammars.model.RuleProbModel;
@@ -15,9 +14,6 @@ import compression.samplegrammars.model.StaticRuleProbModel;
 
 import java.util.List;
 
-import compression.coding.ArithmeticCodingEngine;
-import compression.coding.ArithmeticCodingFactory;
-import compression.coding.nayukiAc.BitOutputStream;
 
 /**
  * @author Sebastian Wild (wild@uwaterloo.ca)

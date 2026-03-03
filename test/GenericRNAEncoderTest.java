@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import compression.coding.bigDecimalAc.ExactArithmeticEncoder;
+import compression.coding.ExactArithmeticEncoder;
 import compression.grammargenerator.UnparsableException;
 import compression.parser.Parser;
 import compression.parser.SRFParser;

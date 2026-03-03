@@ -5,8 +5,8 @@
  */
 package compression.samplegrammars.model;
 
-import compression.coding.bigDecimalAc.BigDecimalInterval;
-import compression.coding.bigDecimalAc.Interval;
+import compression.coding.BigDecimalInterval;
+import compression.coding.Interval;
 import compression.grammar.PairOfChar;
 import compression.grammar.Category;
 import compression.grammar.NonTerminal;
