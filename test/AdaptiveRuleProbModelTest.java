@@ -1,5 +1,5 @@
-import compression.coding.bigDecimalAc.BigDecimalInterval;
-import compression.coding.bigDecimalAc.Interval;
+import compression.coding.BigDecimalInterval;
+import compression.coding.Interval;
 import compression.samplegrammars.model.AdaptiveRuleProbModel;
 import compression.samplegrammars.LiuGrammar;
 import compression.samplegrammars.SampleGrammar;

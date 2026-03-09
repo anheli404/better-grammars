@@ -4,9 +4,9 @@ package compression.coding;/*
  * and open the template in the editor.
  */
 
-import compression.coding.bigDecimalAc.BigDecimalInterval;
-import compression.coding.bigDecimalAc.BigDecimals;
-import compression.coding.bigDecimalAc.Interval;
+import compression.coding.BigDecimalInterval;
+import compression.coding.BigDecimals;
+import compression.coding.Interval;
 //import junit.framework.Assert;
 //import org.testng.annotations.Test;
 import org.junit.Assert;
