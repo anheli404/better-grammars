@@ -1,9 +1,9 @@
 
-import compression.coding.ArithmeticEncoder;
-import compression.coding.BigDecimalInterval;
-import compression.coding.ExactArithmeticDecoder;
-import compression.coding.ExactArithmeticEncoder;
-import compression.coding.Interval;
+import compression.coding.bigdecimal.ArithmeticEncoder;
+import compression.coding.bigdecimal.BigDecimalInterval;
+import compression.coding.bigdecimal.ExactArithmeticDecoder;
+import compression.coding.bigdecimal.ExactArithmeticEncoder;
+import compression.coding.bigdecimal.Interval;
 import junit.framework.Assert;
 //import org.testng.annotations.Test;
 //import org.junit.Assert;

@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-import compression.coding.BigDecimalInterval;
-import compression.coding.BigDecimals;
-import compression.coding.Interval;
+import compression.coding.bigdecimal.BigDecimalInterval;
+import compression.coding.bigdecimal.BigDecimals;
+import compression.coding.bigdecimal.Interval;
 import org.junit.Test;
 
 import java.math.BigDecimal;

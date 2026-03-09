@@ -1,4 +1,4 @@
-package compression.coding;
+package compression.coding.bigdecimal;
 
 /**
  * @author Sebastian Wild (wild@uwaterloo.ca)

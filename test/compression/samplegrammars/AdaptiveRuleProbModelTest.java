@@ -1,7 +1,7 @@
 package compression.samplegrammars;
 
-import compression.coding.BigDecimalInterval;
-import compression.coding.Interval;
+import compression.coding.bigdecimal.BigDecimalInterval;
+import compression.coding.bigdecimal.Interval;
 import compression.samplegrammars.model.AdaptiveRuleProbModel;
 import compression.grammar.PairOfChar;
 import junit.framework.TestCase;

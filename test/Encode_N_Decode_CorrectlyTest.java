@@ -8,8 +8,8 @@
 import compression.GenericRNADecoder;
 import compression.GenericRNAEncoder;
 import compression.LocalConfig;
-import compression.coding.ExactArithmeticDecoder;
-import compression.coding.ExactArithmeticEncoder;
+import compression.coding.bigdecimal.ExactArithmeticDecoder;
+import compression.coding.bigdecimal.ExactArithmeticEncoder;
 import compression.data.Dataset;
 import compression.data.FolderBasedDataset;
 import compression.data.TrainingDataset;

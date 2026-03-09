@@ -1,6 +1,6 @@
 package compression;
 
-import compression.coding.ArithmeticEncoder;
+import compression.coding.bigdecimal.ArithmeticEncoder;
 import compression.grammar.RNAGrammar;
 import compression.grammar.RNAWithStructure;
 import compression.samplegrammars.model.RuleProbModel;

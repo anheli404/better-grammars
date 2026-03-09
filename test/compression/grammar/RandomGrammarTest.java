@@ -2,10 +2,10 @@ package compression.grammar;
 
 import compression.GenericRNADecoder;
 import compression.GenericRNAEncoderForPrecision;
-import compression.coding.ArithmeticDecoder;
-import compression.coding.ArithmeticEncoder;
-import compression.coding.ExactArithmeticDecoder;
-import compression.coding.ExactArithmeticEncoder;
+import compression.coding.bigdecimal.ArithmeticDecoder;
+import compression.coding.bigdecimal.ArithmeticEncoder;
+import compression.coding.bigdecimal.ExactArithmeticDecoder;
+import compression.coding.bigdecimal.ExactArithmeticEncoder;
 import compression.grammargenerator.RandomGrammarExplorer;
 import compression.samplegrammars.model.AdaptiveRuleProbModel;
 import compression.samplegrammars.model.RuleProbModel;

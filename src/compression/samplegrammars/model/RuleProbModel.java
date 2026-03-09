@@ -1,7 +1,7 @@
 package compression.samplegrammars.model;
 
-import compression.coding.BigDecimalInterval;
-import compression.coding.Interval;
+import compression.coding.bigdecimal.BigDecimalInterval;
+import compression.coding.bigdecimal.Interval;
 import compression.grammar.Category;
 import compression.grammar.Grammar;
 import compression.grammar.Rule;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compression.coding;
+package compression.coding.bigdecimal;
 import java.util.List;
 
 /**

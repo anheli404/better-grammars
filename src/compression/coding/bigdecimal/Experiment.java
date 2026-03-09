@@ -1,6 +1,4 @@
-package compression.coding;
-
-import java.math.BigDecimal;
+package compression.coding.bigdecimal;
 
 public class Experiment {
 

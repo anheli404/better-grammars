@@ -1,6 +1,6 @@
 package compression.samplegrammars.model;
 
-import compression.coding.Interval;
+import compression.coding.bigdecimal.Interval;
 import compression.grammar.Category;
 import compression.grammar.NonTerminal;
 import compression.grammar.RNAGrammar;

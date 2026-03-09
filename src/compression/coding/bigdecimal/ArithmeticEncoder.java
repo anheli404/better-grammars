@@ -1,4 +1,4 @@
-package compression.coding;
+package compression.coding.bigdecimal;
 
 /**
  * Interface for our general abstraction of arithmetic encoding.

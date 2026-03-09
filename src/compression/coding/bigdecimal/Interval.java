@@ -1,4 +1,4 @@
-package compression.coding;
+package compression.coding.bigdecimal;
 
 import java.math.BigDecimal;
 import java.util.List;
