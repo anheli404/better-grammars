@@ -6,7 +6,6 @@ import compression.data.TrainingDataset;
 import compression.grammar.RNAWithStructure;
 import compression.samplegrammars.DowellGrammar1Bound;
 import compression.samplegrammars.SampleGrammar;
-import junit.framework.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,6 +29,7 @@ public class Encode_N_Decode_CorrectlyNayukiTest {
 
                 System.out.println(RNAWS);
                 SI4T.runEncodeNDecodeStaticNayuki(RNAWS, trainingDataset);
+                SI4T.runEncodeNDecodeSemiAdaptiveNayuki(RNAWS);
             }
         }
     }

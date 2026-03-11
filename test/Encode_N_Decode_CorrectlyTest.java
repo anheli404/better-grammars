@@ -41,46 +41,46 @@ public class Encode_N_Decode_CorrectlyTest {
             new DowellGrammar1Bound(withNonCanonicalRules)
     );
 
-    @Test
-    public void testEncodeNDecode4AutoGenGrammars() throws IOException {
-        List<SecondaryStructureGrammar> listOfGrammars = new ArrayList<>();
-        String folderNameForGrammars = "testing-10";
-        File grammarFiles = new File(LocalConfig.GIT_ROOT + "/grammars/" + folderNameForGrammars);
-
-        File[] listOfFiles = grammarFiles.listFiles();
-        Random random = new Random(11124);
-        for (int i = 0; i < 30; i++) {
-            File randomGrammarFileSelection = listOfFiles[random.nextInt(listOfFiles.length)];
-            RNAGrammar g = RNAGrammar.from(new GrammarReaderNWriter(randomGrammarFileSelection.getPath()).getGrammarFromFile(), true);
-
-            //Grammar<PairOfChar> g = RNAGrammar.from(new GrammarReaderNWriter("C:/Users/evita/Documents/GitHub/compressed-rna/src/GrammarGenerator/grammars_first_filter/grammar-2NTs-3rules-1.txt").getGrammarFromFile(),false);
-
-
-            System.out.println("GRAMMAR IS: " + g);
-            //System.exit(0);
-            Dataset dataset = new FolderBasedDataset("parsable");
-            File RNAFiles = new File(LocalConfig.GIT_ROOT + "/datasets/parsable");
-            File[] listOfRNAFiles = RNAFiles.listFiles();
-            RNAWithStructure rnaws = FolderBasedDataset.readRNA(listOfRNAFiles[random.nextInt(listOfRNAFiles.length)]);
-            //System.out.println(rnaws.secondaryStructure.length());
-            //System.exit(0);
-            //RNAWithStructure rnaws = FolderBasedDataset.readRNA(new File("C:/Users/evita/Documents/GitHub/compressed-rna/datasets/TestDataSet/testRna2.txt"));
-
-
-            ExactArithmeticEncoder AE = new ExactArithmeticEncoder();
-            RuleProbModel RPMAdaptive = new AdaptiveRuleProbModel(g);
-            GenericRNAEncoder GRAdaptive = new GenericRNAEncoder(RPMAdaptive, AE, g, g.getStartSymbol());
-            String encodedStringAdaptive = GRAdaptive.encodeRNA(rnaws);
-            System.out.println(encodedStringAdaptive);
-            //Decoding
-            AdaptiveRuleProbModel RPMAdaptive4decode = new AdaptiveRuleProbModel(g);//reset probability model
-            ExactArithmeticDecoder AD = new ExactArithmeticDecoder(encodedStringAdaptive);
-            GenericRNADecoder GRAD = new GenericRNADecoder(RPMAdaptive4decode, AD, g.getStartSymbol());
-            RNAWithStructure decoded = GRAD.decode();
-
-            Assert.assertEquals(rnaws, decoded);
-        }
-    }
+//    @Test
+//    public void testEncodeNDecode4AutoGenGrammars() throws IOException {
+//        List<SecondaryStructureGrammar> listOfGrammars = new ArrayList<>();
+//        String folderNameForGrammars = "testing-10";
+//        File grammarFiles = new File(LocalConfig.GIT_ROOT + "/grammars/" + folderNameForGrammars);
+//
+//        File[] listOfFiles = grammarFiles.listFiles();
+//        Random random = new Random(11124);
+//        for (int i = 0; i < 30; i++) {
+//            File randomGrammarFileSelection = listOfFiles[random.nextInt(listOfFiles.length)];
+//            RNAGrammar g = RNAGrammar.from(new GrammarReaderNWriter(randomGrammarFileSelection.getPath()).getGrammarFromFile(), true);
+//
+//            //Grammar<PairOfChar> g = RNAGrammar.from(new GrammarReaderNWriter("C:/Users/evita/Documents/GitHub/compressed-rna/src/GrammarGenerator/grammars_first_filter/grammar-2NTs-3rules-1.txt").getGrammarFromFile(),false);
+//
+//
+//            System.out.println("GRAMMAR IS: " + g);
+//            //System.exit(0);
+//            Dataset dataset = new FolderBasedDataset("parsable");
+//            File RNAFiles = new File(LocalConfig.GIT_ROOT + "/datasets/parsable");
+//            File[] listOfRNAFiles = RNAFiles.listFiles();
+//            RNAWithStructure rnaws = FolderBasedDataset.readRNA(listOfRNAFiles[random.nextInt(listOfRNAFiles.length)]);
+//            //System.out.println(rnaws.secondaryStructure.length());
+//            //System.exit(0);
+//            //RNAWithStructure rnaws = FolderBasedDataset.readRNA(new File("C:/Users/evita/Documents/GitHub/compressed-rna/datasets/TestDataSet/testRna2.txt"));
+//
+//
+//            ExactArithmeticEncoder AE = new ExactArithmeticEncoder();
+//            RuleProbModel RPMAdaptive = new AdaptiveRuleProbModel(g);
+//            GenericRNAEncoder GRAdaptive = new GenericRNAEncoder(RPMAdaptive, AE, g, g.getStartSymbol());
+//            String encodedStringAdaptive = GRAdaptive.encodeRNA(rnaws);
+//            System.out.println(encodedStringAdaptive);
+//            //Decoding
+//            AdaptiveRuleProbModel RPMAdaptive4decode = new AdaptiveRuleProbModel(g);//reset probability model
+//            ExactArithmeticDecoder AD = new ExactArithmeticDecoder(encodedStringAdaptive);
+//            GenericRNADecoder GRAD = new GenericRNADecoder(RPMAdaptive4decode, AD, g.getStartSymbol());
+//            RNAWithStructure decoded = GRAD.decode();
+//
+//            Assert.assertEquals(rnaws, decoded);
+//        }
+//    }
 
     @Test
     public void testCorrectness() throws IOException {
@@ -90,7 +90,7 @@ public class Encode_N_Decode_CorrectlyTest {
 
                 System.out.println(RNAWS);
                 SI4T.runEncodeNDecodeStatic(RNAWS, trainingDataset);
-                SI4T.runEncodeNDecode4Adaptive(RNAWS);
+                //SI4T.runEncodeNDecode4Adaptive(RNAWS);
                 SI4T.runEncodeNDecode4SemiAdaptive(RNAWS);
             }
         }

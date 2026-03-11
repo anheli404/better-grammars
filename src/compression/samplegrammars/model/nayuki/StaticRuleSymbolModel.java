@@ -46,7 +46,7 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
                 ruleSymbolMap.put(rhs, symbol);
                 // add rule to list at symbol position
                 rulesList.add(rhs);
-                // get this rule's count form the list of counts
+                // get this rule's count from the list of counts
                 long count = ruleCounts.getOrDefault(rule, 0L);
                 // if this NT has not been seen, or this rule has not been seen in dataset
                 if (total == 0L || count == 0L) {
