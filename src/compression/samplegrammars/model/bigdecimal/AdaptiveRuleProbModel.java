@@ -51,13 +51,6 @@ public class AdaptiveRuleProbModel implements RuleProbModel {
     private final int precision;
 
     int counter=0;
-    private Map<NonTerminal, Map<List<Category>, Interval>> getRuleProbs() {
-        if (ruleProbs == null) {
-            fillRuleProbs();
-
-        }
-        return ruleProbs;
-    }
 
     public AdaptiveRuleProbModel(final Grammar<?> G, final int precision) {
         this.grammar = G;
@@ -161,6 +154,14 @@ public class AdaptiveRuleProbModel implements RuleProbModel {
         updateRuleFrequency(lhs, res);
         // Step 3: return rhs
         return res;
+    }
+
+    private Map<NonTerminal, Map<List<Category>, Interval>> getRuleProbs() {
+        if (ruleProbs == null) {
+            fillRuleProbs();
+
+        }
+        return ruleProbs;
     }
 
 }

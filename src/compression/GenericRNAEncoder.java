@@ -55,15 +55,4 @@ public class GenericRNAEncoder {
     }
 
 
-//    public String encodeRNANayuki(RNAWithStructure RNA) {
-//        List<Rule> lmd = leftmostDerivationFor(RNA);
-//        for (Rule rule : lmd) {
-//            int symbol = ruleSymbolModel.getSymbolFor(rule);
-//            FrequencyTable freqs = ruleSymbolModel.getFrequencyTable(rule.getLeft());
-//            nayukiEncoder.write(freqs, symbol);
-//        }
-//        nayukiEncoder.finish();
-//
-//    }
-
 }

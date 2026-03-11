@@ -10,7 +10,9 @@ import compression.grammar.RNAWithStructure;
 import compression.grammar.Rule;
 import compression.samplegrammars.RuleCountsForGrammarLaPlace;
 import compression.samplegrammars.SampleGrammar;
+import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
 import compression.samplegrammars.model.bigdecimal.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.SemiAdaptiveRuleProbModel;
 import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
 import compression.samplegrammars.model.nayuki.RuleSymbolModel;
 import compression.samplegrammars.model.nayuki.SemiAdaptiveRuleSymbolModel;
@@ -58,7 +60,7 @@ public class SampleInstanceNayuki4Tests {
 
     public void runEncodeNDecodeSemiAdaptiveNayuki(RNAWithStructure rnaws) throws IOException {
         // Build StaticRuleProbModel as well, because GenericRNAEncoderNayuki uses it in parser for static derivation choice
-        RuleProbModel rpm = RuleProbModel.DONT_CARE;
+        RuleProbModel rpm = new SemiAdaptiveRuleProbModel(G.getGrammar(), rnaws);
         RuleSymbolModel rsmSemiAdaptive = new SemiAdaptiveRuleSymbolModel(G.getGrammar(), rnaws);
 
         // Encoding
@@ -77,6 +79,24 @@ public class SampleInstanceNayuki4Tests {
 
         // Comparison
         Assert.assertEquals(rnaws, decoded);
+    }
+
+    public void runEncodeNDecodeAdaptiveNayuki(RNAWithStructure rnaws) throws IOException {
+        RuleProbModel rpm = new AdaptiveRuleProbModel(G.getGrammar());
+        RuleSymbolModel rsmAdaptive = new SemiAdaptiveRuleSymbolModel(G.getGrammar(), rnaws);
+
+        // Encoding
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        BitOutputStream bitOut = new BitOutputStream(byteOut);
+        NayukiEncoder encoder = new NayukiEncoder(32, bitOut);
+        GenericRNAEncoderNayuki genericEncoderAdaptive = new GenericRNAEncoderNayuki(rpm, rsmAdaptive, encoder, byteOut, bitOut, G.getGrammar(), G.getStartSymbol());
+        byte[] encodedBytes = genericEncoderAdaptive.encodeRNANayuki(rnaws);
+
+        // Decoding
+        // ByteArrayInputStream byteIn = new Byte
+
+
+
     }
 
 }

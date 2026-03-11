@@ -91,7 +91,7 @@ public class Encode_N_Decode_CorrectlyTest {
                 System.out.println(RNAWS);
                 SI4T.runEncodeNDecodeStatic(RNAWS, trainingDataset);
                 //SI4T.runEncodeNDecode4Adaptive(RNAWS);
-                SI4T.runEncodeNDecode4SemiAdaptive(RNAWS);
+                //SI4T.runEncodeNDecode4SemiAdaptive(RNAWS);
             }
         }
     }

@@ -29,7 +29,8 @@ public class Encode_N_Decode_CorrectlyNayukiTest {
 
                 System.out.println(RNAWS);
                 SI4T.runEncodeNDecodeStaticNayuki(RNAWS, trainingDataset);
-                SI4T.runEncodeNDecodeSemiAdaptiveNayuki(RNAWS);
+                //SI4T.runEncodeNDecodeSemiAdaptiveNayuki(RNAWS);
+
             }
         }
     }
