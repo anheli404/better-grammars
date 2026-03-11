@@ -11,8 +11,8 @@ import compression.grammar.*;
 import compression.parser.CYKParser;
 import compression.parser.GrammarReaderNWriter;
 import compression.parser.SRFParser;
-import compression.samplegrammars.model.AdaptiveRuleProbModel;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.io.*;
 import java.nio.channels.FileChannel;

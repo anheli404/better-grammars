@@ -2,7 +2,7 @@ package compression.parser;
 
 import compression.grammar.*;
 import compression.grammargenerator.UnparsableException;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.util.*;
 

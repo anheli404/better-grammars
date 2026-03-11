@@ -8,7 +8,7 @@ import compression.coding.bigdecimal.ExactArithmeticEncoder;
 import compression.grammargenerator.UnparsableException;
 import compression.parser.Parser;
 import compression.parser.SRFParser;
-import compression.samplegrammars.model.StaticRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
 import compression.grammar.NonTerminal;
 
 import compression.grammar.*;

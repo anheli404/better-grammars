@@ -16,9 +16,9 @@ import java.util.Objects;
 
 /**
  * Encodes symbols and writes to an arithmetic-coded bit stream. Not thread-safe.
- * @see ArithmeticDecoder
+ * @see NayukiDecoder
  */
-public final class ArithmeticEncoder extends ArithmeticCoderBase {
+public final class NayukiEncoder extends NayukiCoderBase {
 	
 	/*---- Fields ----*/
 	
@@ -40,7 +40,7 @@ public final class ArithmeticEncoder extends ArithmeticCoderBase {
 	 * @throws NullPointerException if the output stream is {@code null}
 	 * @throws IllegalArgumentException if stateSize is outside the range [1, 62]
 	 */
-	public ArithmeticEncoder(int numBits, BitOutputStream out) {
+	public NayukiEncoder(int numBits, BitOutputStream out) {
 		super(numBits);
 		output = Objects.requireNonNull(out);
 		numUnderflow = 0;
@@ -106,5 +106,5 @@ public final class ArithmeticEncoder extends ArithmeticCoderBase {
 			throw new ArithmeticException("Maximum underflow reached");
 		numUnderflow++;
 	}
-	
+
 }

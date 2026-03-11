@@ -1,4 +1,4 @@
-package compression.samplegrammars.model;
+package compression.samplegrammars.model.bigdecimal;
 
 import compression.coding.bigdecimal.BigDecimalInterval;
 import compression.coding.bigdecimal.Interval;

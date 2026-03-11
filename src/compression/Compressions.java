@@ -8,10 +8,10 @@ import compression.data.Dataset;
 import compression.data.FolderBasedDataset;
 import compression.data.TrainingDataset;
 import compression.grammar.*;
-import compression.samplegrammars.model.AdaptiveRuleProbModel;
-import compression.samplegrammars.model.RuleProbModel;
-import compression.samplegrammars.model.SemiAdaptiveRuleProbModel;
-import compression.samplegrammars.model.StaticRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.SemiAdaptiveRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
 import compression.util.CSVFile;
 
 import java.io.File;

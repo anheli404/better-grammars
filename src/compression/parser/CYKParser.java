@@ -3,7 +3,7 @@ package compression.parser;
 import compression.coding.bigdecimal.BigDecimalInterval;
 import compression.coding.bigdecimal.Interval;
 import compression.grammar.*;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.util.*;
 

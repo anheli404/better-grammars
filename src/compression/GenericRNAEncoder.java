@@ -2,15 +2,17 @@ package compression;
 
 
 import compression.coding.bigdecimal.ArithmeticEncoder;
+import compression.coding.nayuki.NayukiEncoder;
 import compression.parser.SRFParser;
 import compression.parser.StochasticParser;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 import compression.samplegrammars.LeftmostDerivation;
 import compression.grammar.NonTerminal;
 import compression.grammar.Rule;
 
 import compression.grammar.*;
-import compression.samplegrammars.model.StaticRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
+import jdk.jfr.Frequency;
 
 import java.util.List;
 
@@ -51,5 +53,17 @@ public class GenericRNAEncoder {
         }
         return acEncoder.getFinalEncoding();
     }
+
+
+//    public String encodeRNANayuki(RNAWithStructure RNA) {
+//        List<Rule> lmd = leftmostDerivationFor(RNA);
+//        for (Rule rule : lmd) {
+//            int symbol = ruleSymbolModel.getSymbolFor(rule);
+//            FrequencyTable freqs = ruleSymbolModel.getFrequencyTable(rule.getLeft());
+//            nayukiEncoder.write(freqs, symbol);
+//        }
+//        nayukiEncoder.finish();
+//
+//    }
 
 }

@@ -7,8 +7,8 @@ import compression.coding.bigdecimal.ArithmeticEncoder;
 import compression.coding.bigdecimal.ExactArithmeticDecoder;
 import compression.coding.bigdecimal.ExactArithmeticEncoder;
 import compression.grammargenerator.RandomGrammarExplorer;
-import compression.samplegrammars.model.AdaptiveRuleProbModel;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 import org.junit.Assert;
 import org.junit.Test;
 

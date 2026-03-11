@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compression.samplegrammars.model;
+package compression.samplegrammars.model.bigdecimal;
 
 import compression.coding.bigdecimal.BigDecimalInterval;
 import compression.coding.bigdecimal.Interval;

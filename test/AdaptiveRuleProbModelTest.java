@@ -1,6 +1,6 @@
 import compression.coding.bigdecimal.BigDecimalInterval;
 import compression.coding.bigdecimal.Interval;
-import compression.samplegrammars.model.AdaptiveRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
 import compression.samplegrammars.LiuGrammar;
 import compression.samplegrammars.SampleGrammar;
 import compression.grammar.PairOfChar;

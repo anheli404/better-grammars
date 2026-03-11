@@ -2,7 +2,7 @@ package compression.samplegrammars;
 
 import compression.data.Dataset;
 import compression.grammar.*;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

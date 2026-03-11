@@ -2,10 +2,9 @@ package compression.samplegrammars;
 
 import compression.grammar.*;
 import compression.grammargenerator.UnparsableException;
-import compression.parser.CYKParser;
 import compression.parser.Parser;
 import compression.parser.SRFParser;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.util.List;
 

@@ -13,10 +13,10 @@ import java.io.IOException;
 
 /**
  * Provides the state and behaviors that arithmetic coding encoders and decoders share.
- * @see ArithmeticEncoder
- * @see ArithmeticDecoder
+ * @see NayukiEncoder
+ * @see NayukiDecoder
  */
-public abstract class ArithmeticCoderBase {
+public abstract class NayukiCoderBase {
 	
 	/*---- Configuration fields ----*/
 	
@@ -79,7 +79,7 @@ public abstract class ArithmeticCoderBase {
 	 * @param numBits the number of bits for the arithmetic coding range
 	 * @throws IllegalArgumentException if stateSize is outside the range [1, 62]
 	 */
-	public ArithmeticCoderBase(int numBits) {
+	public NayukiCoderBase(int numBits) {
 		if (!(1 <= numBits && numBits <= 62))
 			throw new IllegalArgumentException("State size out of range");
 		numStateBits = numBits;

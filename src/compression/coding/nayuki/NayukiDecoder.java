@@ -14,9 +14,9 @@ import java.util.Objects;
 
 /**
  * Reads from an arithmetic-coded bit stream and decodes symbols. Not thread-safe.
- * @see ArithmeticEncoder
+ * @see NayukiEncoder
  */
-public final class ArithmeticDecoder extends ArithmeticCoderBase {
+public final class NayukiDecoder extends NayukiCoderBase {
 	
 	/*---- Fields ----*/
 	
@@ -39,7 +39,7 @@ public final class ArithmeticDecoder extends ArithmeticCoderBase {
 	 * @throws IllegalArgumentException if stateSize is outside the range [1, 62]
 	 * @throws IOException if an I/O exception occurred
 	 */
-	public ArithmeticDecoder(int numBits, BitInputStream in) throws IOException {
+	public NayukiDecoder(int numBits, BitInputStream in) throws IOException {
 		super(numBits);
 		input = Objects.requireNonNull(in);
 		code = 0;

@@ -2,11 +2,8 @@ package compression.parser;
 
 import compression.grammar.*;
 import compression.grammargenerator.UnparsableException;
-import compression.parser.CYKParser;
-import compression.parser.SRFParser;
-import compression.parser.StochasticParser;
-import compression.samplegrammars.model.RuleProbModel;
-import compression.samplegrammars.model.StaticRuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;

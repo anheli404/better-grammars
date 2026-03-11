@@ -8,7 +8,7 @@ package compression.samplegrammars;
 import compression.grammar.RNAGrammar;
 import compression.grammar.RNAWithStructure;
 import compression.grammar.Rule;
-import compression.samplegrammars.model.RuleProbModel;
+import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 
 import java.util.Collections;
 import java.util.HashMap;
