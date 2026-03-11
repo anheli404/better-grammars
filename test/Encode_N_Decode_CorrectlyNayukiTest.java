@@ -1,5 +1,3 @@
-import compression.GenericRNADecoderNayuki;
-import compression.GenericRNAEncoderNayuki;
 import compression.data.Dataset;
 import compression.data.FolderBasedDataset;
 import compression.data.TrainingDataset;
@@ -13,7 +11,7 @@ import java.util.List;
 
 public class Encode_N_Decode_CorrectlyNayukiTest {
 
-    Dataset dataset = new FolderBasedDataset("TestDataSet");
+    Dataset dataset = new FolderBasedDataset("dowell-benchmark-10-percent");
     TrainingDataset trainingDataset = new TrainingDataset("TestTrainingData");
     boolean withNonCanonicalRules = true;
 
@@ -22,14 +20,15 @@ public class Encode_N_Decode_CorrectlyNayukiTest {
     );
 
     @Test
-    public void testCorrectnessStaticNayuki() throws IOException {
+    public void testCorrectnessNayuki() throws IOException {
         for (SampleGrammar grammar : listOfGrammars) {
             for (RNAWithStructure RNAWS : dataset) {
                 SampleInstanceNayuki4Tests SI4T = new SampleInstanceNayuki4Tests(grammar);
 
                 System.out.println(RNAWS);
-                SI4T.runEncodeNDecodeStaticNayuki(RNAWS, trainingDataset);
+                //SI4T.runEncodeNDecodeStaticNayuki(RNAWS, trainingDataset);
                 //SI4T.runEncodeNDecodeSemiAdaptiveNayuki(RNAWS);
+                SI4T.runEncodeNDecodeAdaptiveNayuki(RNAWS);
 
             }
         }
