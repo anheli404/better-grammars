@@ -75,12 +75,6 @@ public class AdaptiveRuleSymbolModel implements RuleSymbolModel {
         return rhs;
     }
 
-    public void observe(Rule rule) {
-        NonTerminal lhs = rule.getLeft();
-        int symbol = getSymbolFor(rule);
-        increment(lhs, symbol);   // encoder updates after encoding rule
-    }
-
     private void increment(NonTerminal lhs, int symbol) {
         int[] freqs = lhsToFreqs.get(lhs);
         if (freqs == null)
