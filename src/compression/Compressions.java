@@ -1,6 +1,8 @@
 package compression;
 
 
+import compression.coding.ArithmeticCodingFactory;
+import compression.coding.backend.ArithmeticCodingBackend;
 import compression.coding.bigdecimal.ArithmeticEncoder;
 import compression.coding.bigdecimal.BitSizeOnlyArithmeticEncoder;
 import compression.data.CachedDataset;
@@ -12,6 +14,7 @@ import compression.samplegrammars.model.bigdecimal.AdaptiveRuleProbModel;
 import compression.samplegrammars.model.bigdecimal.RuleProbModel;
 import compression.samplegrammars.model.bigdecimal.SemiAdaptiveRuleProbModel;
 import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
+import compression.samplegrammars.model.nayuki.RuleSymbolModel;
 import compression.util.CSVFile;
 
 import java.io.File;
@@ -133,23 +136,28 @@ public class Compressions {
             final Dataset dataset, final RNAGrammar G, final RuleProbType model, final TrainingDataset trainingDataset) {
         Map<RNAWithStructure, Integer> encodedLengths = Collections.synchronizedMap(
                 new HashMap<>(dataset.getSize() * 3 / 2));
+        final ArithmeticCodingBackend backend = ArithmeticCodingFactory.create(LocalConfig.AC_BACKEND);
 
         // For static models, get rule probabilities once and for all up front
         final Map<Rule, Double> staticRuleProbs;
+        final Map<Rule, Long> staticRuleCounts;
         try {
             switch (model) {
                 case STATIC:
                     // compute rule counts over training dataset
                     Dataset cachedTrainingDataset = new CachedDataset(trainingDataset);
                     Map<Rule, Long> ruleCounts = G.computeRuleCounts(cachedTrainingDataset);
+                    staticRuleCounts = Collections.unmodifiableMap(ruleCounts);
                     staticRuleProbs = Collections.unmodifiableMap(G.computeRulesToProbs(ruleCounts));
                     break;
                 case STATIC_FROM_FILE:
+                    staticRuleCounts = null;
                     // load rule probabilities from file
                     staticRuleProbs = Collections.unmodifiableMap(
                             G.readRuleProbs(trainingDataset.ruleProbsFileFor(G)));
                     break;
                 default:
+                    staticRuleCounts = null;
                     staticRuleProbs = null;
             }
         } catch (IOException e) {
@@ -162,7 +170,6 @@ public class Compressions {
 
         StreamSupport.stream(dataset.spliterator(), true).unordered()
                 .forEach((rnaWithStructure) -> {
-                    final ArithmeticEncoder arithmeticEncoder = new BitSizeOnlyArithmeticEncoder();
                     final RuleProbModel ruleProbModel;
                     switch (model) {
                         case STATIC:
@@ -178,11 +185,33 @@ public class Compressions {
                         default:
                             throw new AssertionError();
                     }
-                    GenericRNAEncoderForPrecision encoder =
-                            new GenericRNAEncoderForPrecision(
-                                    ruleProbModel, arithmeticEncoder,
-                                    G.getGrammar(), G.getStartSymbol());
-                    int encodedLength = encoder.getPrecisionForRNACode(rnaWithStructure);
+                    final int encodedLength;
+                    switch (LocalConfig.AC_BACKEND) {
+                        case BIG_DECIMAL:
+                            final ArithmeticEncoder arithmeticEncoder = new BitSizeOnlyArithmeticEncoder();
+                            GenericRNAEncoderForPrecision encoder =
+                                    new GenericRNAEncoderForPrecision(
+                                            ruleProbModel, arithmeticEncoder,
+                                            G.getGrammar(), G.getStartSymbol());
+                            encodedLength = encoder.getPrecisionForRNACode(rnaWithStructure);
+                            break;
+                        case NAYUKI:
+                            RuleSymbolModel ruleSymbolModel = backend.createRuleSymbolModel(
+                                    model,
+                                    G.getGrammar(),
+                                    rnaWithStructure,
+                                    staticRuleCounts);
+                            encodedLength = backend.createEncoder(
+                                            ruleProbModel,
+                                            ruleSymbolModel,
+                                            G.getGrammar(),
+                                            G.getStartSymbol())
+                                    .encode(rnaWithStructure)
+                                    .bitLength();
+                            break;
+                        default:
+                            throw new AssertionError("Unsupported arithmetic coding backend: " + LocalConfig.AC_BACKEND);
+                    }
                     encodedLengths.put(rnaWithStructure, encodedLength);
                 });
         return encodedLengths;

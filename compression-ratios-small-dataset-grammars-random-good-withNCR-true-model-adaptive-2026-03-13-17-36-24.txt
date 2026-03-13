@@ -1,0 +1,7 @@
+compression.Compressions small-dataset random-good true ADAPTIVE
+
+dataset = CachedDataset(dataset=Dataset(name='small-dataset'))
+trainingDataset = null
+withNonCanonicalRules = true
+grammars = random-good
+model = adaptive
