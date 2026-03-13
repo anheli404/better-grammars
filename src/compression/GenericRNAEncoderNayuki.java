@@ -13,6 +13,7 @@ import compression.grammar.Rule;
 
 import compression.grammar.*;
 import compression.samplegrammars.model.bigdecimal.StaticRuleProbModel;
+import compression.samplegrammars.model.nayuki.AdaptiveRuleSymbolModel;
 import compression.samplegrammars.model.nayuki.RuleSymbolModel;
 
 import java.io.ByteArrayOutputStream;
@@ -67,6 +68,9 @@ public class GenericRNAEncoderNayuki {
                 encoder.write(freqTable, symbol);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
+            }
+            if (symbolModel instanceof AdaptiveRuleSymbolModel) {
+                ((AdaptiveRuleSymbolModel) symbolModel).updateOnEncode(rule);
             }
         }
         try {

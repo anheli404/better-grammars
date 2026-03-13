@@ -29,8 +29,18 @@ public final class SimpleFrequencyTable implements FrequencyTable {
 	
 	// Always equal to the sum of 'frequencies'.
 	private int total;
-	
-	
+
+	// For S:
+	// [7, 4]
+	// For L:
+	// x = [5, 15, 10, 5, 5, 10, 10, 15, 10, 15], total = 100
+	// cumulative = [5, 20, 30, 35, 40, 50, 60, 75, 85, 100] [0, 100) => [35, 48888)
+	// acEncoder.encode(model.getInterval(rule) = (0.20, 0.30))
+	// [0, 1), [0.442, 0.573) => [0.442 + 0.20*0.131, 0.442 + 0.30*0.131)
+	// nayukiEncoder.write(model.getFrequencyTable(NT), model.getSymbol(rule))
+	// nayukiEncoder.write(x, 6)
+	//
+
 	
 	/*---- Constructors ----*/
 	

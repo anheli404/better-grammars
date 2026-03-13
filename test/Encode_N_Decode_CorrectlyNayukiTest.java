@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Encode_N_Decode_CorrectlyNayukiTest {
 
-    Dataset dataset = new FolderBasedDataset("dowell-benchmark-10-percent");
+    Dataset dataset = new FolderBasedDataset("dowell-benchmark");
     TrainingDataset trainingDataset = new TrainingDataset("TestTrainingData");
     boolean withNonCanonicalRules = true;
 

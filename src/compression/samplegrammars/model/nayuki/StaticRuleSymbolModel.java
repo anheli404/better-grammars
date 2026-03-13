@@ -124,4 +124,9 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         }
         return (int) value;
     }
+
+    public void updateOnEncode(Rule rule) {
+        throw new UnsupportedOperationException("Static model does not update shit!!!!");
+    }
+
 }

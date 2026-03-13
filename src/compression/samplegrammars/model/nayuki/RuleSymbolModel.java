@@ -14,4 +14,6 @@ public interface RuleSymbolModel {
 
     List<Category> getRhsFor(int symbol, NonTerminal lhs);
 
+    void updateOnEncode(Rule rule);
+
 }

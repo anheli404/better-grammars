@@ -20,4 +20,9 @@ public class SemiAdaptiveRuleSymbolModel extends StaticRuleSymbolModel {
         rules.forEach((rule) -> rulesToFrequency.replace(rule, rulesToFrequency.get(rule) + 1));
         return rulesToFrequency;
     }
+
+    public void updateOnEncode(Rule rule) {
+        throw new UnsupportedOperationException("Semi-adaptive model does not update shit!!!!");
+    }
+
 }

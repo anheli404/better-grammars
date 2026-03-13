@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Encode_N_Decode_CorrectlyTest {
-    Dataset dataset = new FolderBasedDataset("dowell-benchmark-10-percent");
+    Dataset dataset = new FolderBasedDataset("dowell-benchmark");
     TrainingDataset trainingDataset = new TrainingDataset("TestTrainingData");
     boolean withNonCanonicalRules = true;
     boolean withHairpinLengthOne = true;
@@ -90,8 +90,8 @@ public class Encode_N_Decode_CorrectlyTest {
 
                 System.out.println(RNAWS);
                 //SI4T.runEncodeNDecodeStatic(RNAWS, trainingDataset);
-                //SI4T.runEncodeNDecode4Adaptive(RNAWS);
-                SI4T.runEncodeNDecode4SemiAdaptive(RNAWS);
+                SI4T.runEncodeNDecode4Adaptive(RNAWS);
+                //SI4T.runEncodeNDecode4SemiAdaptive(RNAWS);
             }
         }
     }

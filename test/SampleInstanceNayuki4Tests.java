@@ -84,20 +84,21 @@ public class SampleInstanceNayuki4Tests {
 
     public void runEncodeNDecodeAdaptiveNayuki(RNAWithStructure rnaws) throws IOException {
         RuleProbModel rpm = new AdaptiveRuleProbModel(G.getGrammar());
-        RuleSymbolModel rsmAdaptive = new AdaptiveRuleSymbolModel(G.getGrammar());
+        RuleSymbolModel rsmAdaptiveEncoding = new AdaptiveRuleSymbolModel(G.getGrammar());
+        RuleSymbolModel rsmAdaptiveDecoding = new AdaptiveRuleSymbolModel(G.getGrammar());
 
         // Encoding
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         BitOutputStream bitOut = new BitOutputStream(byteOut);
         NayukiEncoder encoder = new NayukiEncoder(32, bitOut);
-        GenericRNAEncoderNayuki genericEncoderAdaptive = new GenericRNAEncoderNayuki(rpm, rsmAdaptive, encoder, byteOut, bitOut, G.getGrammar(), G.getStartSymbol());
+        GenericRNAEncoderNayuki genericEncoderAdaptive = new GenericRNAEncoderNayuki(rpm, rsmAdaptiveEncoding, encoder, byteOut, bitOut, G.getGrammar(), G.getStartSymbol());
         byte[] encodedBytes = genericEncoderAdaptive.encodeRNANayuki(rnaws);
 
          // Decoding
          ByteArrayInputStream byteIn = new ByteArrayInputStream(encodedBytes);
          BitInputStream bitIn = new BitInputStream(byteIn);
          NayukiDecoder decoder = new NayukiDecoder(32, bitIn);
-         GenericRNADecoderNayuki genericDecoderAdaptive = new GenericRNADecoderNayuki(rsmAdaptive, decoder, G.getStartSymbol());
+         GenericRNADecoderNayuki genericDecoderAdaptive = new GenericRNADecoderNayuki(rsmAdaptiveDecoding, decoder, G.getStartSymbol());
          RNAWithStructure decoded = genericDecoderAdaptive.decode();
 
          // Compare
