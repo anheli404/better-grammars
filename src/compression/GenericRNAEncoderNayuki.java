@@ -70,7 +70,7 @@ public class GenericRNAEncoderNayuki {
                 System.out.println(e.getMessage());
             }
             if (symbolModel instanceof AdaptiveRuleSymbolModel) {
-                ((AdaptiveRuleSymbolModel) symbolModel).updateOnEncode(rule);
+                symbolModel.updateOnEncode(rule);
             }
         }
         try {
