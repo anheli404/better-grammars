@@ -22,7 +22,7 @@ public class SemiAdaptiveRuleSymbolModel extends StaticRuleSymbolModel {
     }
 
     public void updateOnEncode(Rule rule) {
-        throw new UnsupportedOperationException("Semi-adaptive model does not update shit!!!!");
+        throw new UnsupportedOperationException("Semi-adaptive model does not update rule counts.");
     }
 
 }

@@ -9,8 +9,11 @@ import java.util.*;
 
 public class StaticRuleSymbolModel implements RuleSymbolModel {
 
+    // For each NT and rhs, get the symbol for that rhs
     private final Map<NonTerminal, Map<List<Category>, Integer>> ruleToSymbol = new HashMap<>();
+    // Given a symbol, get the rhs that corresponds to it
     private final Map<NonTerminal, List<List<Category>>> symbolToRule = new HashMap<>();
+    // Given NT, get its frequency table
     private final Map<NonTerminal, int[]> lhsToFreqs = new HashMap<>();
 
     public StaticRuleSymbolModel(Grammar<?> grammar, Map<Rule, Long> ruleCounts) {
@@ -126,7 +129,7 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
     }
 
     public void updateOnEncode(Rule rule) {
-        throw new UnsupportedOperationException("Static model does not update shit!!!!");
+        throw new UnsupportedOperationException("Static model does not update rule counts.");
     }
 
 }
