@@ -7,6 +7,12 @@ import compression.grammar.Rule;
 
 import java.util.*;
 
+/**
+ * Implementation of RuleSymbolModel that provides a static probability model
+ * for arithmetic coding using Nayuki.
+ * In this model, rule frequencies are determined before encoding begins
+ * and remain constant throughout encoding and decoding.
+ */
 public class StaticRuleSymbolModel implements RuleSymbolModel {
 
     // For each NT and rhs, get the symbol for that rhs
@@ -20,6 +26,14 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         initializeAllMaps(grammar, ruleCounts);
     }
 
+    /**
+     * Builds rule mappings and initializes frequency tables based
+     * on rule counts.
+     * @param grammar with which we encode/decode and whose production
+     *                rules define the symbol space for Nayuki coders.
+     * @param ruleCounts that were collected previously and are passed
+     *                   in constructor.
+     */
     public void initializeAllMaps(Grammar<?> grammar, Map<Rule,Long> ruleCounts) {
         // for each NT in given grammar
         for (NonTerminal lhs : grammar.getNonTerminals()) {
@@ -69,6 +83,11 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         }
     }
 
+    /**
+     * Retrieves integer symbol assigned to a rule based on its lhs.
+     * @param rule the grammar rule to encode
+     * @return symbol corresponding to given grammar rule.
+     */
     @Override
     public int getSymbolFor(Rule rule) {
         // NT of the rule
@@ -90,6 +109,11 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         return symbol;
     }
 
+    /**
+     * Retrieves frequency table for specific non-terminal.
+     * @param lhs the non-terminal whose rule frequencies are requested.
+     * @return frequency table that corresponds to given NT.
+     */
     @Override
     public int[] getFrequenciesFor(NonTerminal lhs) {
         // Get frequencies corresponding to given NT
@@ -102,6 +126,13 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         return freqs.clone();
     }
 
+    /**
+     * Performs reverse lookup from symbol to rule. Returns rhs
+     * of rule associated with a symbol.
+     * @param symbol the symbol read from the arithmetic decoder
+     * @param lhs the non-terminal currently being expanded
+     * @return rhs of rule associated with given symbol.
+     */
     @Override
     public List<Category> getRhsFor(int symbol, NonTerminal lhs) {
         // Get the list of rules corresponding to given NT
@@ -118,6 +149,12 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         return rules.get(symbol);
     }
 
+    /**
+     * Utility method that safely converts a long value into an integer
+     * frequency.
+     * @param value long value that needs to be converted
+     * @return integer derived from the long value given.
+     */
     public static int safeLongToInt(long value) {
         if (value <= 0L) {
             throw new IllegalArgumentException("Frequency must be positive");
@@ -128,6 +165,10 @@ public class StaticRuleSymbolModel implements RuleSymbolModel {
         return (int) value;
     }
 
+    /**
+     * Unsupported method, since static model does not modify rule frequencies.
+     * @param rule the rule that was just encoded.
+     */
     public void updateOnEncode(Rule rule) {
         throw new UnsupportedOperationException("Static model does not update rule counts.");
     }
