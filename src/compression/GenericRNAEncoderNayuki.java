@@ -20,6 +20,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Encoder class that connects RNA grammar/parsing part of project
+ * with Nayuki arithmetic coding backend. Its job is to take an RNAWithStructure
+ * object, compute its leftmost derivation, convert each grammar rule in that
+ * derivation into a symbol, and then write those symbols with the Nayuki
+ * arithmetic encoder using the corresponding frequency tables.
+ */
 public class GenericRNAEncoderNayuki {
 
     protected final NayukiEncoder encoder;
@@ -49,11 +56,28 @@ public class GenericRNAEncoderNayuki {
             this.parser = new SRFParser<>(grammar, RuleProbModel.DONT_CARE);
     }
 
+    /**
+     * Helper method that delegates to LeftmostDerivation class.
+     * @param RNA for which we need to compute lmd
+     * @return lmd as list of Rule objects
+     */
     public List<Rule> leftmostDerivationFor(RNAWithStructure RNA){
         return LeftmostDerivation.rules(parser, RNA);
     }
 
 
+    /**
+     * Computes the lmd, then processes rules one by one.
+     * For each rule, it asks the RuleSymbolModel for two things: symbol
+     * assigned to that rule, frequency table for all rules that share
+     * the same lhs. These frequencies are then wrapped into a Nayuki
+     * SimpleFrequencyTable, and the resulting symbol is written to
+     * the arithmetic encoder. At each step, the NT currently being expanded
+     * determines the coding alphabet and the chosen production rule is encoded
+     * as one symbol within that alphabet.
+     * @param RNA that needs to be encoded
+     * @return final byte array which is the binary encoding of the given RNA.
+     */
     public byte[] encodeRNANayuki(RNAWithStructure RNA) {
         List<Rule> lmd = leftmostDerivationFor(RNA);
         for (Rule rule : lmd) {
@@ -78,12 +102,24 @@ public class GenericRNAEncoderNayuki {
         return out.toByteArray();
     }
 
+    /**
+     * Convenience method that turns the encoded RNA byte array
+     * into a bit string.
+     * @param RNA to be encoded
+     * @return encoded RNA bit string
+     */
     public String encodeRNANayukiToBitString(RNAWithStructure RNA) {
         byte[] encoded = encodeRNANayuki(RNA);
         return bytesToBitString(encoded);
     }
 
 
+    /**
+     * Helper method for converting the byte array containing
+     * the encoding of the RNA structure into a bit string
+     * @param encoded encoded RNA byte array
+     * @return encoded RNA bit string
+     */
     private String bytesToBitString(byte[] encoded) {
         StringBuilder sb = new StringBuilder(encoded.length * 8);
         for (byte b : encoded) {
